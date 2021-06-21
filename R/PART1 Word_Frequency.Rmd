@@ -1,0 +1,166 @@
+---
+title: "PART 1- Words Frequency of Perfume"
+author: "Daniel Wang"
+date: "6/7/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{css, echo= FALSE}
+body {
+  font-family: Helvetica;
+  padding: 20px;
+  background: #ffffff;
+}
+
+.header {
+  padding: 30px;
+  font-size: 40px;
+  text-align: center;
+  background: white;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.footer {
+  padding: 20px;
+  text-align: center;
+  background: #ddd;
+  margin-top: 20px;
+}
+```
+
+I'd like to know what are the most common ingredients used in the this perfume data table. It has several steps:
+
+### Step 1: Install all required packages and load data
+
+```{R, echo = T, message = FALSE, warning = FALSE, results = FALSE}
+setwd("F:/R Projects/Perfume")
+library(devtools)
+library(tidyverse)
+library(dplyr)
+install_url('https://cran.r-project.org/src/contrib/Archive/rmongodb/rmongodb_1.8.0.tar.gz')
+library(rmongodb)
+install_github('SMAPPNYU/smappR')
+library(smappR)
+library(kableExtra)
+read.csv("final_perfume_data.csv") -> perfume_data
+```
+The tools here are a bit outdated- some of the counterparts (e.g.rmongb) are no longer available in CRAN network,so I am surely working on some new solutions. 
+
+### Step 2: Data Cleaning! 
+
+Take your broom with me and let's see if the data is clean or not!
+
+After viewing the data, I spotted that in some rows, the value "note" is blank. For example: 
+```{R, echo = FALSE, message = FALSE, warning = FALSE, results = TRUE}
+slice(perfume_data, 1495) %>%
+  kbl() %>%
+  kable_styling() %>%
+  scroll_box(width = "100%", height = "200px")
+```
+
+Crap! It seems like the "notes" section is completely left blank! :-( 
+
+But then let's whip our magic wand and clean it in 3 seconds with mutate_all function! 
+```{R, echo = TRUE, message = FALSE, warning = FALSE, results = TRUE}
+perfume_data %>%
+  mutate_all(~ifelse(. %in% c("null", ""), NA, .)) %>%
+  na.omit() -> perfume_data_clean
+```
+Let's explain this function layers by layers: 
+
+ 1. %in% function is used to see if an element (left side of %in%) belongs to a vector or data frame (right side of %in%).So what we want to know here is if in our **perfume_data** there are any null ("null") or blank values (""). The output is Boolean (TRUE, FALSE).
+ 2. ifelse function tests if a logic is true. In our syntax, ifelse is used to see if any column in our data frame contains "empty values", if yes, transform them into unified, R-recognizable "NA", if not, return the original data frame. 
+ 3. After the transformation, we could just use na.omit function to delete rows with "empty values". 
+ 4. Let's name our cleaned data frame **perfume_data_clean**. 
+ 
+Let's see how many entries are removed
+```{R, echo = TRUE, message = FALSE, warning = FALSE, results = TRUE}
+nrow(perfume_data)
+nrow(perfume_data_clean)
+```
+ 
+
+### Step 3: Split the strings into invididual pieces so it's countable
+
+```{R, echo = T, message = FALSE, warning = FALSE, results = FALSE}
+str_split(perfume_data_clean$Notes, ", ") -> perfume_data_clean$Notes_new
+```
+Where ",space" is the seperator 
+
+### Step 4: Count
+```{R, echo = T, message = FALSE, warning = FALSE, results = FALSE}
+wordFreq <- word.frequencies(perfume_data_clean$Notes_new)
+```
+By default, the word.frequencies command only returns one column, which consists only the number of frequencies, the "object name" that frequency correspond to is framed as row name. 
+So we need to transform the row name into the first column. You can both remove row names and convert them to a column by reference (without reallocating memory using ->) using setDT and its keep.rownames = TRUE argument from the data.table package. 
+
+### Step 5: Put it as a data frame
+```{R, echo = T, message = FALSE, warning = FALSE, results = FALSE}
+Notes_frequency <- as.data.frame(wordFreq)
+library(data.table)
+setDT(Notes_frequency, keep.rownames = "Notes")
+```
+
+### step 6: Have a look! 
+
+```{R}
+tibble(Notes_frequency)
+```
+### Step 7: Visualize!
+```{R}
+library(dplyr)
+library(ggplot2)
+    Notes_frequency%>% 
+    arrange(desc(wordFreq)) %>%
+    slice(1:20) %>%
+    ggplot(., aes(x = reorder(Notes, wordFreq), y = wordFreq)) +
+    geom_col() +
+    labs(title="Ingredients Frequency",
+         x = NULL,
+         y = "Frequency") +
+    coord_flip()
+```
+
+Some technical explanation to what I've just done:
+
+1. Pipe the chunk so it has its "sub chunk" to run with, a bit like sub quires;
+2. Use arrange function in a descending order to pick from most frequent to least frequent;
+3. Slice (Subset rows using their positions) from position 1 to 20, namely, top 20 most frequent notes;
+4. Use ggplot. (NOTE: since the data frame is already piped, you just need to enter "." to represent data frame)
+5. Reorder (AGAIN!) by using aes (x= reorder (notes, freq)) to order the notes to go in a desc order. Otherwise aes(x = Notes, y = wordFreq), it will just go with the default order, like this:   
+```{R, echo = FALSE}
+    Notes_frequency%>% 
+    arrange(desc(wordFreq)) %>%
+    slice(1:20) %>%
+    ggplot(., aes(x = Notes, y = wordFreq)) +
+    geom_col() +
+    labs(title="Ingredients Frequency",
+         x = NULL,
+         y = "Frequency") +
+    coord_flip()
+```
+
+6. Set the legend, and done! ENJOY! 
+
+
+
+### More on Perfume Ingredients
+
+After some online research, I found out why ingredients like musk, vanilla, sandalwood or amber are topped in ingredients list of a perfume.They are the common ingredients of the "base notes" of a perfume. Different combinations of ingredients bring us different "notes". There are for example citrus notes, which contains ingredients such as mandarin, grapefruit and bergamot.  
+
+A bottle of perfume usually have more than one notes. These notes are categorized as base notes, middle notes and top notes, based on their silage longevity. This is called the "note pyramid" of a perfume. In the next markdown, I will try to formulate my own perfume by using smappR and grep!           
+
+
+
+
+
+

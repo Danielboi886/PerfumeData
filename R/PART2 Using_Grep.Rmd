@@ -1,0 +1,156 @@
+---
+title: "PART-2 Let's Make A Perfume Palette"
+author: "Daniel Wang"
+date: "6/9/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{css, echo= FALSE}
+body {
+  font-family: Helvetica;
+  padding: 20px;
+  background: #ffffff;
+}
+
+.header {
+  padding: 30px;
+  font-size: 40px;
+  text-align: center;
+  background: white;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.footer {
+  padding: 20px;
+  text-align: center;
+  background: #ddd;
+  margin-top: 20px;
+}
+
+```
+
+## Let's Make A Perfume Palette!
+
+Previously on frequency count on ingredients, we discussed some of the most popular ingredients on perfume. This time we will try to make our own perfume using smappR words frequency tool!
+
+### Step 1: Load Data and Required Pacakages
+
+```{R, echo = T, message = FALSE, warning = FALSE, results = FALSE}
+setwd("F:/R Projects/Perfume")
+library(devtools)
+library(tidyverse)
+install_url('https://cran.r-project.org/src/contrib/Archive/rmongodb/rmongodb_1.8.0.tar.gz')
+library(rmongodb)
+install_github('SMAPPNYU/smappR')
+library(smappR)
+install_github('haozhu233/kableExtra')
+library(kableExtra)
+read.csv("final_perfume_data.csv") -> perfume_data
+perfume_data %>%
+  mutate_all(~ifelse(. %in% c("null", ""), NA, .)) %>%
+  na.omit() -> perfume_data_clean
+str_split(perfume_data_clean$Notes, ", ") -> perfume_data_clean$Notes_new
+wordFreq <- word.frequencies(perfume_data_clean$Notes_new, verbose = FALSE)
+```
+
+### Step 2: Using grep and slice to make a palette!
+
+Let's first of all have a overview of all the ingredients, here I'll just show the top 50 ingredients. 
+```{R, echo = TRUE, message = FALSE, warning = FALSE, results = TRUE}
+wordFreq[(1:50)] %>%
+  kbl() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))%>%
+  scroll_box(width = "100%", height = "200px")
+```
+
+Then the logic is three-folded,
+
+1. First, find all the vectors that include the "ingredient" you are looking for;
+2. Second, count the word frequencies from these vectors on other "ingredients";
+3. Third, print the result out!
+
+Similar to %in%, grep is another tool to find if a certain element matches the data frame. %in% returns Boolean values. However, when grep(value=) is set **FALSE**, grep returns an indexing vector that counts the occurrence of elements. When grep(value=) is set **TRUE**, it will return all vectors containing the element, which is what we need in this case. For more, refer to https://www.geeksforgeeks.org/string-matching-in-r-programming/ for help!  
+
+Here I chose the note "rose".
+
+```{R, echo = TRUE, message = FALSE, warning = FALSE, results = FALSE}
+grep('rose', perfume_data_clean$Notes_new, value=TRUE) -> rose_list 
+rose_match <- word.frequencies(rose_list, verbose = FALSE)
+rose_match_df <- as.data.frame(rose_match)
+```
+```{R, echo = TRUE, message = FALSE, warning = FALSE, results = TRUE}
+library(data.table)
+setDT(rose_match_df, keep.rownames = "Notes")
+slice(rose_match_df,2:31) %>%
+  kbl() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))%>%
+  scroll_box(width = "100%", height = "400px")
+```
+```{R, echo = FALSE, message = FALSE, warning = FALSE, results = FALSE}
+rm(rose_list)
+rm(rose_match)
+rm(rose_match_df)
+```
+
+If you are a more experienced perfume connoisseur, then you might already have 2 or 3 ingredients in your head. It makes the formula even more precises because you are narrowing down the possible combinations!
+
+```{R, echo = TRUE, message = FALSE, warning = FALSE, results = FALSE}
+grep('bergamot.*jasmine.*rose', perfume_data_clean$Notes_new, value=TRUE) -> bergamotjasminerose_list
+bergamotjasminerose_match <- word.frequencies(bergamotjasminerose_list, verbose = FALSE)
+```
+```{R, echo = TRUE, message = FALSE, warning = FALSE, results = TRUE}
+bergamotjasminerose_match_df <- as.data.frame(bergamotjasminerose_match)
+library(data.table)
+setDT(bergamotjasminerose_match_df, keep.rownames = "Notes")
+slice(bergamotjasminerose_match_df,2:31) %>%
+  kbl() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))%>%
+  scroll_box(width = "100%", height = "400px")
+```
+```{R, echo = FALSE, message = FALSE, warning = FALSE, results = FALSE}
+rm(bergamotjasminerose_list)
+rm(bergamotjasminerose_match)
+rm(bergamotjasminerose_match_df)
+```
+
+
+
+### Step 3: My Perfume!
+Based on the data, you could already come up with your own formula! I picked the following ingredients. 
+
+Let's call this one **Zesty White**! 
+
+**Zesty White**'s formula:
+
+::: {#formula style="color: green; font-family:optima; font-size:20px "}
+Bergamot, Jasmine, Rose, Musk, Incense, Ylang-ylang, Tuberose, Pepper, Labdanum, Lily, Benzoin
+:::
+
+
+Let's see if could find a similar formulation from other perfumer. Ah! I found one here: 
+
+Nocturnes de Caron Caron
+
+https://www.fragrantica.com/perfume/Caron/Nocturnes-de-Caron-284.html
+
+Top Notes: Aldehydes, Neroli, Tincture of Rose, Organge
+
+Middle Notes: Ylang-ylang, Tuberose, Jasmine
+
+Base Notes: Vetiver, Sandalwood, Musk
+
+
+To be a certified perfumer, someone needs to finish a degree in chemistry and a 2-year of perfume school, then start apprenticeship for quite a a few years - there are only about 1,000 perfumer around the world!  (source: https://fridaymagazine.ae/life-culture/ask-the-experts/how-to-become-a-perfumer-1.2305026, retrieved 11-06-2021) Think about how many perfumes there are in the market!  
+
+
+Try it yourself!! 
+
