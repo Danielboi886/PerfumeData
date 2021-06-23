@@ -44,23 +44,27 @@ In the last few projects, I used SmappR, %in% and ggplot to create reports based
 
 However, this data base has a richer corpus that are waiting to be explored, the "description" data base. Let's first have a look on what a "description" in this data base looks alike: 
 ```{R, echo = FALSE, message = FALSE, warning = FALSE, results = FALSE}
-setwd("F:/R Projects/Perfume")
+install.packages("devtools")
 library(devtools)
 library(tidyverse)
+install_github('haozhu233/kableExtra')
 library(kableExtra)
+install.packages("topicmodels")
 library(topicmodels)
 library(tm)
 library(formattable)
 library(tidytext)
 library(tidyr)
+install_github('SMAPPNYU/smappR')
 library(smappR)
-library(topicmodels)
+install.packages("ggrepel")
 library(ggrepel)
+install.packages("qdap")
 library(qdap)
 library(remotes)
 install_github("EmilHvitfeldt/textdata")
 library(textdata)
-read.csv("final_perfume_data.csv") -> perfume_data
+read.csv("https://www.dropbox.com/s/wvzevr0z39uf44x/final_perfume_data.csv?dl=1") -> perfume_data
 perfume_data %>%
   mutate_all(~ifelse(. %in% c("null", ""), NA, .)) %>%
   na.omit() -> perfume_data_clean

@@ -37,12 +37,14 @@ body {
 }
 ```
 
+# PART 1- Words Frequency of Perfume
+
 I'd like to know what are the most common ingredients used in the this perfume data table. It has several steps:
 
 ### Step 1: Install all required packages and load data
 
 ```{R, echo = T, message = FALSE, warning = FALSE, results = FALSE}
-setwd("F:/R Projects/Perfume")
+install.packages("devtools")
 library(devtools)
 library(tidyverse)
 library(dplyr)
@@ -50,8 +52,9 @@ install_url('https://cran.r-project.org/src/contrib/Archive/rmongodb/rmongodb_1.
 library(rmongodb)
 install_github('SMAPPNYU/smappR')
 library(smappR)
+install_github('haozhu233/kableExtra')
 library(kableExtra)
-read.csv("final_perfume_data.csv") -> perfume_data
+read.csv("https://www.dropbox.com/s/wvzevr0z39uf44x/final_perfume_data.csv?dl=1") -> perfume_data
 ```
 The tools here are a bit outdated- some of the counterparts (e.g.rmongb) are no longer available in CRAN network,so I am surely working on some new solutions. 
 
