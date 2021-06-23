@@ -1,15 +1,18 @@
 ##Step 1: Install all required packages and load data
 install.packages("devtools")
+install.packages("stringr")
 library(devtools)
+install_github('SMAPPNYU/smappR')
+install_url('https://cran.r-project.org/src/contrib/Archive/rmongodb/rmongodb_1.8.0.tar.gz')
+install_github('haozhu233/kableExtra')
 library(tidyverse)
 library(dplyr)
-install_url('https://cran.r-project.org/src/contrib/Archive/rmongodb/rmongodb_1.8.0.tar.gz')
+library(stringr)
 library(rmongodb)
-install_github('SMAPPNYU/smappR')
 library(smappR)
-install_github('haozhu233/kableExtra')
 library(kableExtra)
 read.csv("https://www.dropbox.com/s/wvzevr0z39uf44x/final_perfume_data.csv?dl=1") -> perfume_data
+
 ## Step 2: Data Cleaning! 
 perfume_data %>%
   mutate_all(~ifelse(. %in% c("null", ""), NA, .)) %>%

@@ -39,8 +39,6 @@ slice(rose_match_df,2:31) %>%
 
 grep('bergamot.*jasmine.*rose', perfume_data_clean$Notes_new, value=TRUE) -> bergamotjasminerose_list
 bergamotjasminerose_match <- word.frequencies(bergamotjasminerose_list, verbose = FALSE)
-```
-```{R, echo = TRUE, message = FALSE, warning = FALSE, results = TRUE}
 bergamotjasminerose_match_df <- as.data.frame(bergamotjasminerose_match)
 library(data.table)
 setDT(bergamotjasminerose_match_df, keep.rownames = "Notes")
@@ -48,8 +46,6 @@ slice(bergamotjasminerose_match_df,2:31) %>%
   kbl() %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))%>%
   scroll_box(width = "100%", height = "400px")
-```
-```{R, echo = FALSE, message = FALSE, warning = FALSE, results = FALSE}
 rm(bergamotjasminerose_list)
 rm(bergamotjasminerose_match)
 rm(bergamotjasminerose_match_df)
