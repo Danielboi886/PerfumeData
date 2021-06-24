@@ -1,5 +1,5 @@
 # PerfumeData
-In this project I used a data base that includes name, description, notes and image of more than 2000 perfume to build a perfume evaluation system. 
+In this project I used a data base that includes name, description, notes and image of more than 2000 perfumes to build a perfume evaluation system. 
 
 The database can you find it over <https://www.kaggle.com/nandini1999/perfume-recommendation-dataset>
 
