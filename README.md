@@ -13,7 +13,7 @@ There are three parts in this project:
 
 3. LDA and emotional analysis
 
-For Projects in R, please go to PerfumeData/R. I dumped both rmd files and knitted HTMLS in the depo. 
+For Projects in R, please go to PerfumeData/R. I dumped both rmd files and knitted HTMLS in the repo. 
 
 For Projects in Pythin, please go to PerfumeData/Python. There's a jupyter notebook file. I also upload it on my Google Colab:<https://colab.research.google.com/drive/1OFxqTxruJoGZp6c22hrT6caxH2JrOM8Y?usp=sharing> 
 
