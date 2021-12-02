@@ -3,6 +3,8 @@ In this project I used a data base that includes name, description, notes and im
 
 The database can you find it over <https://www.kaggle.com/nandini1999/perfume-recommendation-dataset>
 
+##First part: Data Preperation
+
 It contains two version: Python and R.
 
 There are three parts in this project:
@@ -17,9 +19,20 @@ For Projects in R, please go to PerfumeData/R. I dumped both rmd files and knitt
 
 For Projects in Python, please go to PerfumeData/Python. There's a jupyter notebook file. I also upload it on my Google Colab:<https://colab.research.google.com/drive/1OFxqTxruJoGZp6c22hrT6caxH2JrOM8Y?usp=sharing> 
 
-Check it out! 
 
+##Second part: Data Presentation 
 
+I will be working with HTML/CSS and Javascript to let user get access to the perfume they want. 
+
+User will put in notes & emotions they are looking for (search matrix), and the corresponding search results will be retrived from the JavaScript database.
+
+The search matrix (aka notes) have already been worked out and database have been cleaned. 
+
+Now the roadmap will be 
+
+1. Convert retrived data into JavaScript Object Notation. 
+2. Write the search function where the script will return corresponding data based on search matrix. 
+3. Beautify the user interface. 
 
 ------------------------------------------------------------
 ## Some highlights of my research: 
