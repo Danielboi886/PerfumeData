@@ -3,7 +3,7 @@ In this project I used a data base that includes name, description, notes and im
 
 The database can you find it over <https://www.kaggle.com/nandini1999/perfume-recommendation-dataset>
 
-##First part: Data Preperation
+## First part: Data Preperation
 
 It contains two version: Python and R.
 
@@ -20,7 +20,7 @@ For Projects in R, please go to PerfumeData/R. I dumped both rmd files and knitt
 For Projects in Python, please go to PerfumeData/Python. There's a jupyter notebook file. I also upload it on my Google Colab:<https://colab.research.google.com/drive/1OFxqTxruJoGZp6c22hrT6caxH2JrOM8Y?usp=sharing> 
 
 
-##Second part: Data Presentation 
+## Second part: Data Presentation 
 
 I will be working with HTML/CSS and Javascript to let user get access to the perfume they want. 
 
