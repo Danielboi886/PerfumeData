@@ -24,7 +24,7 @@ For Projects in Python, please go to PerfumeData/Python. There's a jupyter noteb
 
 I will be working with HTML/CSS and Javascript to let user get access to the perfume they want. 
 
-*Update: Since there's no Perfume API for this assignment, I chose to persent a peom that includes the notes & emotions in its line. 
+* Update: Since there's no Perfume API for this assignment, I chose to persent a peom that includes the notes & emotions in its line. 
 
 User will put in notes & emotions they are looking for (search matrix), and the corresponding search results will be retrived from the JavaScript database.
 
