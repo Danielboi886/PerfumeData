@@ -1,0 +1,96 @@
+@import url(http://fonts.googleapis.com/css?family=Merriweather);
+
+.mood_container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+}
+
+#hero {
+  height: 200px;
+  background-image: url("src/hero1.jpg");
+  background-size: cover;
+}
+
+#feeling_question {
+  position: relative;
+  font-family: "Merriweather", Helvetica, sans-serif;
+}
+
+.mood_item {
+  width: 150px;
+  height: 150px;
+  line-height: 150px;
+  margin: 20px;
+  flex-grow: 1;
+  text-align: center;
+  font-family: "Courier New", monospace;
+  font-size: 1.5em;
+  transition: box-shadow 1s, background-color 1s;
+  cursor: pointer;
+}
+.mood_item:hover {
+  border-radius: 5px;
+  /* box-shadow: 0 3px 10px -2px rgba(0, 0, 0, 0.35); */
+  box-shadow: 0 0 50px #cca90d, 0 0 75px #d13710;
+}
+.mood_item:nth-child(n + 0) {
+  background: #f2b70565;
+}
+
+.mood_item:nth-child(2n + 0) {
+  background: #f29f0565;
+  width: 300px;
+}
+.mood_item:nth-child(3n + 0) {
+  background: #f2740565;
+  width: 200px;
+}
+.mood_item:nth-child(4n + 0) {
+  background: #f25c0565;
+  width: 250px;
+}
+
+#poem_content {
+  display: block;
+  white-space: pre;
+}
+
+#deselect,
+#show_btn,
+#restart {
+  background-color: #cc6343b6;
+  border-radius: 8px;
+  border-style: none;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: "Inter UI", "SF Pro Display", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+    sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  height: 4rem;
+  padding: 0 1.6rem;
+  text-align: center;
+  text-shadow: rgba(0, 0, 0, 0.25) 0 3px 8px;
+  transition: all 0.5s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  margin: 20px;
+}
+
+#deselect,
+#show_btn,
+#restart:hover {
+  box-shadow: rgba(145, 46, 7, 0.5) 0 1px 30px;
+  transition-duration: 0.1s;
+}
+
+/* @media (min-width: 768px) {
+  .button-36 {
+    padding: 0 2.6rem;
+  }
+} */
