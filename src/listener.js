@@ -2,6 +2,7 @@ import {
   vibeClickHandler,
   deselectAllVibesHandler,
   clearFirstPageDomElement,
+  fetchPoemByVibes,
 } from "./handler.js";
 
 import { showNextPageDomElement } from "./view.js";
@@ -30,5 +31,13 @@ export function showRecommendationsOnNextPage() {
   btn.addEventListener("click", () => {
     clearFirstPageDomElement();
     showNextPageDomElement();
+    fetchPoemByVibes();
+  });
+}
+
+export function restartListener() {
+  const btn = document.getElementById("restart");
+  btn.addEventListener("click", () => {
+    location.reload();
   });
 }
